@@ -1,5 +1,23 @@
 {% extends 'base.html' %} {% block content %}
 <div>
   <h1>Welcome to expense management system.</h1>
+  {% if name %}
+  <h1>Hello {{name}}!</h1>
+  <button type="button">
+    <a href="{% url 'logout' %}">Logout</a>
+  </button>
+  <button type="button">
+    <a href="{% url 'dashboard' %}">Go to dashboard</a>
+  </button>
+  {% else %}
+  <div>
+    <button type="button">
+      <a href="{% url 'signin' %}">Signin</a>
+    </button>
+    <button type="button">
+      <a href="{% url 'signup' %}">Register</a>
+    </button>
+  </div>
+  {% endif %}
 </div>
 {% endblock%}
