@@ -7,7 +7,8 @@ PROFILE_CHOICES = (("1", "Manager"), ("2", "Engineer"), ("3", "Accountant"))
 
 # employee table ->
 class Employee(AbstractUser):
-    username = models.CharField(blank=False, max_length=20, unique=True)
+    username = models.CharField(blank=False, max_length=20,
+                                unique=True)  #employee id
     name = models.CharField(blank=False, max_length=50, default='admin')
     accountno = models.CharField(blank=False, max_length=30, default='00000')
     email = models.EmailField(blank=False)
@@ -33,7 +34,7 @@ class Expense(models.Model):
     description = models.CharField(blank=False, max_length=100)
     date = models.DateField(blank=False)
     attachments = models.FileField(blank=False,
-                                   default='sample',
+                                   default='attachments/sample',
                                    upload_to='attachments/')
     approvalstatus = models.BooleanField(default=False)
     paymentstatus = models.BooleanField(default=False)

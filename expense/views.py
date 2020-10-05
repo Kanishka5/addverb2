@@ -58,7 +58,7 @@ def signin(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect('/')
+                return redirect('dashboard')
             else:
                 return HttpResponse("Your account was inactive. Contact Admin")
         else:
@@ -77,9 +77,26 @@ def logoutReq(request):
 
 #dashboard ->
 def dashboard(request):
-    t = int(request.user.id)
-    expenses = Expense.objects.filter(username=t).order_by('date')
-    return render(request, 'dashboard.html', {'expenses': expenses})
+    empid = int(request.user.id)
+    user = Employee.objects.get(pk=empid)
+    data = {}
+    payreq = {}
+    if (user.profile == '1'):
+        underman = Employee.objects.filter(managerid_id=empid)
+        data = Expense.objects.filter(username_id__in=underman,
+                                      approvalstatus=False)
+        # data = Expense.objects.raw(
+        #     'SELECT * FROM expense_expense WHERE username_id in (SELECT id from expense_employee WHERE managerid_id = %s)',
+        #     [empid])
+    elif (user.profile == '3'):
+        payreq = Expense.objects.filter(paymentstatus=False)
+
+    expenses = Expense.objects.filter(username=empid).order_by('date')
+    return render(request, 'dashboard.html', {
+        'expenses': expenses,
+        'approvereq': data,
+        'payreq': payreq
+    })
 
 
 #expense form ->
@@ -92,7 +109,7 @@ def expenseform(request):
         data['username'] = user
         data._mutable = _mutable
         print(data)
-        form = ExpenseForm(data)
+        form = ExpenseForm(data, request.FILES)
         print(form)
 
         if form.is_valid():
@@ -103,3 +120,28 @@ def expenseform(request):
             return render(request, 'expenseform.html')
     else:
         return render(request, 'expenseform.html')
+
+
+# accept/reject approval request ->
+def approve(request):
+    if (request.method == 'POST'):
+        print(request.POST.get('Approval'))
+        if (request.POST.get('Approval') == 'Approve'):
+            expenseid = request.POST.get('expenseid')
+            Expense.objects.filter(pk=expenseid).update(approvalstatus=True)
+        # Expense.objects.raw(
+        #     'UPDATE expense_expense SET approvalstatus=True WHERE username_id = %s',
+        #     [empid])
+    return redirect('dashboard')
+
+
+# accept/reject payment request ->
+def paymentreq(request):
+    if (request.method == 'POST'):
+        if (request.POST.get('Approval') == 'Approve'):
+            expenseid = request.POST.get('expenseid')
+            Expense.objects.filter(pk=expenseid).update(paymentstatus=True)
+        # Expense.objects.raw(
+        #     'UPDATE expense_expense SET approvalstatus=True WHERE username_id = %s',
+        #     [empid])
+    return redirect('dashboard')

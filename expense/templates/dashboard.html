@@ -7,6 +7,59 @@
   </head>
   <body style="text-align: center">
     <h1>Hello I am dashboard.</h1>
+    <!-- for manager -->
+    {% if approvereq %}
+    <h1>Approve requests:</h1>
+    {% for expense in approvereq %}
+    <div style="margin: 0 20vw; display: flex; justify-content: space-between">
+      <p>{{expense.username}}</p>
+      <p>{{expense.description}}</p>
+      <p>{{expense.amount}}</p>
+      <p>{{expense.date}}</p>
+      <p>{{expense.approvalstatus}}</p>
+      <p>{{expense.paymentstatus}}</p>
+      <a href="/media/{{expense.attachments}}" target="__blank"
+        >view attachments</a
+      >
+      <form action="/approval/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="expenseid" value="{{expense.id}}" />
+        <input type="submit" name="Approval" value="Approve" />
+      </form>
+      <form action="/approval/" method="post">
+        {% csrf_token %}
+        <input type="submit" name="Approval" value="Deny" />
+      </form>
+    </div>
+    {% endfor %} {% endif %}
+
+    <!-- for accountant -->
+    {% if payreq %}
+    <h1>Payment requests:</h1>
+    {% for expense in payreq %}
+    <div style="margin: 0 20vw; display: flex; justify-content: space-between">
+      <p>{{expense.id}}</p>
+      <p>{{expense.description}}</p>
+      <p>{{expense.amount}}</p>
+      <p>{{expense.date}}</p>
+      <p>{{expense.approvalstatus}}</p>
+      <p>{{expense.paymentstatus}}</p>
+      <a href="/media/{{expense.attachments}}" target="__blank"
+        >view attachments</a
+      >
+      <form action="/paymentreq/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="expenseid" value="{{expense.id}}" />
+        <input type="submit" name="Approval" value="Approve" />
+      </form>
+      <form action="/paymentreq/" method="post">
+        {% csrf_token %}
+        <input type="submit" name="Approval" value="Deny" />
+      </form>
+    </div>
+    {% endfor %} {% endif %}
+
+    <!-- for all -->
     <button type="button">
       <a href="{% url 'expenseform' %}"> new expense </a>
     </button>
@@ -20,6 +73,7 @@
         <h3>expense date</h3>
         <h3>expense approval status</h3>
         <h3>expense payment status</h3>
+        <h3>attachments</h3>
       </div>
 
       {% for expense in expenses %}
@@ -31,6 +85,9 @@
         <p>{{expense.date}}</p>
         <p>{{expense.approvalstatus}}</p>
         <p>{{expense.paymentstatus}}</p>
+        <a href="/media/{{expense.attachments}}" target="__blank"
+          >view attachments</a
+        >
       </div>
       {% endfor %}
     </div>
