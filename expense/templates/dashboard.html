@@ -3,83 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dasboard</title>
+    {% load static %}
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{% static
+    "vendor/bootstrap/css/bootstrap.min.css" %}" /> <link rel="stylesheet"
+    type="text/css" href="{% static
+    "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}" /> <link
+    rel="stylesheet" type="text/css" href="{% static
+    "fonts/iconic/css/material-design-iconic-font.min.css" %}" /> <link
+    rel="stylesheet" type="text/css" href="{% static
+    "vendor/animate/animate.css" %}" /> <link rel="stylesheet" type="text/css"
+    href="{% static "vendor/css-hamburgers/hamburgers.min.css" %}" /> <link
+    rel="stylesheet" type="text/css" href="{% static
+    "vendor/animsition/css/animsition.min.css" %}" /> <link rel="stylesheet"
+    type="text/css" href="{% static "vendor/select2/select2.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static
+    "vendor/daterangepicker/daterangepicker.css" %}" /> <link rel="stylesheet"
+    type="text/css" href="{% static "css/util.css" %}" /> <link rel="stylesheet"
+    type="text/css" href="{% static "css/main.css" %}" /> <link rel="stylesheet"
+    type="text/css" href="{% static "css/nav2.css" %}" /> <link rel="stylesheet"
+    type="text/css" href="{% static "css/dashboard.css" %}" />
   </head>
   <body style="text-align: center">
-    <h1>Hello I am dashboard.</h1>
-    <!-- for manager -->
-    {% if approvereq %}
-    <h1>Approve requests:</h1>
-    {% for expense in approvereq %}
-    <div style="margin: 0 20vw; display: flex; justify-content: space-between">
-      <p>{{expense.username}}</p>
-      <p>{{expense.description}}</p>
-      <p>{{expense.amount}}</p>
-      <p>{{expense.date}}</p>
-      <p>{{expense.approvalstatus}}</p>
-      <p>{{expense.paymentstatus}}</p>
-      <a href="/media/{{expense.attachments}}" target="__blank"
-        >view attachments</a
-      >
-      <form action="/approval/" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="expenseid" value="{{expense.id}}" />
-        <input type="submit" name="Approval" value="Approve" />
-      </form>
-      <form action="/approval/" method="post">
-        {% csrf_token %}
-        <input type="submit" name="Approval" value="Deny" />
-      </form>
-    </div>
-    {% endfor %} {% endif %}
-
-    <!-- for accountant -->
-    {% if payreq %}
-    <h1>Payment requests:</h1>
-    {% for expense in payreq %}
-    <div style="margin: 0 20vw; display: flex; justify-content: space-between">
-      <p>{{expense.id}}</p>
-      <p>{{expense.description}}</p>
-      <p>{{expense.amount}}</p>
-      <p>{{expense.date}}</p>
-      <p>{{expense.approvalstatus}}</p>
-      <p>{{expense.paymentstatus}}</p>
-      <a href="/media/{{expense.attachments}}" target="__blank"
-        >view attachments</a
-      >
-      <form action="/paymentreq/" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="expenseid" value="{{expense.id}}" />
-        <input type="submit" name="Approval" value="Approve" />
-      </form>
-      <form action="/paymentreq/" method="post">
-        {% csrf_token %}
-        <input type="submit" name="Approval" value="Deny" />
-      </form>
-    </div>
-    {% endfor %} {% endif %}
-
-    <!-- for all -->
-    <button type="button">
-      <a href="{% url 'expenseform' %}"> new expense </a>
-    </button>
-    <div>
-      <h1>Expenses</h1>
-      <div
-        style="margin: 0 20vw; display: flex; justify-content: space-between"
-      >
-        <h3>expense description</h3>
-        <h3>expense amount</h3>
-        <h3>expense date</h3>
-        <h3>expense approval status</h3>
-        <h3>expense payment status</h3>
-        <h3>attachments</h3>
+    <!-- navbar -->
+    <nav class="nav">
+      <div class="container" id="nav-cont">
+        <div id="mainListDiv" class="main_list">
+          <ul class="navlinks">
+            <li><a href="../">Home</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="../"> Hi {{ user.name }} !</a></li>
+            {% else %}
+            <li><a href="{% url 'signin' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <span class="navTrigger">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
       </div>
+    </nav>
 
-      {% for expense in expenses %}
+    <div class="dashboard">
+      <!-- for manager -->
+      {% if approvereq %}
+      <h1>Approve requests:</h1>
+      {% for expense in approvereq %}
       <div
         style="margin: 0 20vw; display: flex; justify-content: space-between"
       >
+        <p>{{expense.username}}</p>
         <p>{{expense.description}}</p>
         <p>{{expense.amount}}</p>
         <p>{{expense.date}}</p>
@@ -88,8 +65,113 @@
         <a href="/media/{{expense.attachments}}" target="__blank"
           >view attachments</a
         >
+        <form action="/approval/" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="expenseid" value="{{expense.id}}" />
+          <input type="submit" name="Approval" value="Approve" />
+        </form>
+        <form action="/approval/" method="post">
+          {% csrf_token %}
+          <input type="submit" name="Approval" value="Deny" />
+        </form>
       </div>
-      {% endfor %}
+      {% endfor %} {% endif %}
+
+      <!-- for accountant -->
+      {% if payreq %}
+      <h1>Payment requests:</h1>
+      {% for expense in payreq %}
+      <div
+        style="margin: 0 20vw; display: flex; justify-content: space-between"
+      >
+        <p>{{expense.id}}</p>
+        <p>{{expense.description}}</p>
+        <p>{{expense.amount}}</p>
+        <p>{{expense.date}}</p>
+        <p>{{expense.approvalstatus}}</p>
+        <p>{{expense.paymentstatus}}</p>
+        <a href="/media/{{expense.attachments}}" target="__blank"
+          >view attachments</a
+        >
+        <form action="/paymentreq/" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="expenseid" value="{{expense.id}}" />
+          <input type="submit" name="Approval" value="Approve" />
+        </form>
+        <form action="/paymentreq/" method="post">
+          {% csrf_token %}
+          <input type="submit" name="Approval" value="Deny" />
+        </form>
+      </div>
+      {% endfor %} {% endif %}
+
+      <!-- for all -->
+      <button type="button">
+        <a href="{% url 'expenseform' %}"> new expense </a>
+      </button>
+      <div>
+        <h1>Your Expenses</h1>
+        <div
+          style="margin: 0 20vw; display: flex; justify-content: space-between"
+        >
+          <h3>expense description</h3>
+          <h3>expense amount</h3>
+          <h3>expense date</h3>
+          <h3>expense approval status</h3>
+          <h3>expense payment status</h3>
+          <h3>attachments</h3>
+        </div>
+
+        {% for expense in expenses %}
+        <div
+          style="margin: 0 20vw; display: flex; justify-content: space-between"
+        >
+          <p>{{expense.description}}</p>
+          <p>{{expense.amount}}</p>
+          <p>{{expense.date}}</p>
+          <p>{{expense.approvalstatus}}</p>
+          <p>{{expense.paymentstatus}}</p>
+          <a href="/media/{{expense.attachments}}" target="__blank"
+            >view attachments</a
+          >
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Team expense -->
+      <div>
+        <h1>Team Expenses</h1>
+        <div
+          style="margin: 0 20vw; display: flex; justify-content: space-between"
+        >
+          <h3>expense description</h3>
+          <h3>expense amount</h3>
+          <h3>expense date</h3>
+          <h3>expense approval status</h3>
+          <h3>expense payment status</h3>
+          <h3>attachments</h3>
+        </div>
+
+        {% for expense in expenses %}
+        <div
+          style="margin: 0 20vw; display: flex; justify-content: space-between"
+        >
+          <p>{{expense.description}}</p>
+          <p>{{expense.amount}}</p>
+          <p>{{expense.date}}</p>
+          <p>{{expense.approvalstatus}}</p>
+          <p>{{expense.paymentstatus}}</p>
+          <a href="/media/{{expense.attachments}}" target="__blank"
+            >view attachments</a
+          >
+        </div>
+        {% endfor %}
+      </div>
     </div>
+
+    <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
+    <script src="{% static "vendor/animsition/js/animsition.min.js" %}"></script>
+    <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/nav.js" %}"></script>
   </body>
 </html>

@@ -77,52 +77,58 @@ def logoutReq(request):
 
 #dashboard ->
 def dashboard(request):
-    empid = int(request.user.id)
-    user = Employee.objects.get(pk=empid)
-    data = {}
-    payreq = {}
-    if (user.profile == '1'):
-        underman = Employee.objects.filter(managerid_id=empid)
-        data = Expense.objects.filter(username_id__in=underman,
-                                      approvalstatus=False)
-        # data = Expense.objects.raw(
-        #     'SELECT * FROM expense_expense WHERE username_id in (SELECT id from expense_employee WHERE managerid_id = %s)',
-        #     [empid])
-    elif (user.profile == '3'):
-        payreq = Expense.objects.filter(paymentstatus=False)
+    if request.user.is_anonymous:
+        return redirect('signin')
+    else:
+        empid = int(request.user.id)
+        user = Employee.objects.get(pk=empid)
+        data = {}
+        payreq = {}
+        if (user.profile == '1'):
+            underman = Employee.objects.filter(managerid_id=empid)
+            data = Expense.objects.filter(username_id__in=underman,
+                                          approvalstatus=False)
+            # data = Expense.objects.raw(
+            #     'SELECT * FROM expense_expense WHERE username_id in (SELECT id from expense_employee WHERE managerid_id = %s)',
+            #     [empid])
+        elif (user.profile == '3'):
+            payreq = Expense.objects.filter(paymentstatus=False)
 
-    expenses = Expense.objects.filter(username=empid).order_by('date')
-    return render(request, 'dashboard.html', {
-        'expenses': expenses,
-        'approvereq': data,
-        'payreq': payreq
-    })
+        expenses = Expense.objects.filter(username=empid).order_by('date')
+        return render(request, 'dashboard.html', {
+            'expenses': expenses,
+            'approvereq': data,
+            'payreq': payreq
+        })
 
 
 #expense form ->
 def expenseform(request):
-    if (request.method == 'POST'):
-        print(request.FILES)
-        data = request.POST
-        empid = int(request.user.id)
-        user = Employee.objects.get(pk=empid)
-        _mutable = data._mutable
-        data._mutable = True
-        data['username'] = empid
-        if (user.profile == '1'):
-            data['approvalstatus'] = True
-        data._mutable = _mutable
-        form = ExpenseForm(data, request.FILES)
-
-        if form.is_valid():
-            expense = form.save(commit=False)
-            expense.save()
-            return redirect('dashboard')
-        else:
-            return render(request, 'expenseform.html')
+    if request.user.is_anonymous:
+        return redirect('signin')
     else:
-        form = ExpenseForm()
-        return render(request, 'expenseform.html', {'form': form})
+        if (request.method == 'POST'):
+            print(request.FILES)
+            data = request.POST
+            empid = int(request.user.id)
+            user = Employee.objects.get(pk=empid)
+            _mutable = data._mutable
+            data._mutable = True
+            data['username'] = empid
+            if (user.profile == '1'):
+                data['approvalstatus'] = True
+            data._mutable = _mutable
+            form = ExpenseForm(data, request.FILES)
+
+            if form.is_valid():
+                expense = form.save(commit=False)
+                expense.save()
+                return redirect('dashboard')
+            else:
+                return render(request, 'expenseform.html')
+        else:
+            form = ExpenseForm()
+            return render(request, 'expenseform.html', {'form': form})
 
 
 # accept/reject approval request ->
