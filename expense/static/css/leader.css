@@ -1,0 +1,118 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.heading {
+  float: center;
+  text-align: center;
+  color: white;
+  padding: 5vh 0
+}
+
+.table {
+  display: table;
+  width: 100%;
+  position: absolute;
+  height: 100%;
+}
+
+.table-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#decoration,
+#decoration2,
+#decoration3 {
+  position: absolute;
+  background-color: yellow;
+  /* width: 420px; */
+  height: 70px;
+  opacity: 0;
+  border-radius: 10px;
+}
+
+#decoration2 {
+  background-color: magenta;
+}
+
+#decoration3 {
+  background-color: cyan;
+}
+
+.gap {
+  margin-left: 120px;
+}
+
+.top .leader li {
+  background-color: yellow;
+}
+
+.leader {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 auto;
+  width: 800px;
+  height: 390px;
+}
+.leader li {
+  background-color: #fff;
+  border-radius: 5px;
+  height: 70px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+.leader li .list_num {
+  float: left;
+  line-height: 40px;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.65);
+  margin: 15px;
+  font-weight: bold;
+  width: 20px;
+  text-align: right;
+  margin-left: 10px;
+}
+.leader li h2 {
+  display: block;
+  margin: 0;
+  font-size: 18px;
+  line-height: 40px;
+  font-weight: 300;
+  margin-top: 15px;
+  padding-right: 20px;
+}
+.leader li h2 .number {
+  float: right;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.65);
+  transition: color 0.3s;
+}
+.leader li img {
+  width: 40px;
+  height: 40px;
+  float: left;
+  margin: 15px 20px;
+  margin-left: 0;
+  border-radius: 100%;
+}
+
+@media only screen and (max-width: 800px) {
+  .leader {
+    width: 95vw;
+    display: inline;
+  }
+
+  .table {
+    width: 100%;
+    margin-top: 10vh;
+    padding: 0 3vw;
+  }
+
+  .gap {
+    margin-left: 20px;
+  }
+}

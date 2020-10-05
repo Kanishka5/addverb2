@@ -33,9 +33,7 @@ class Expense(models.Model):
     amount = models.FloatField(blank=False)
     description = models.CharField(blank=False, max_length=100)
     date = models.DateField(blank=False)
-    attachments = models.FileField(blank=False,
-                                   default='attachments/sample',
-                                   upload_to='attachments/')
+    attachments = models.FileField(blank=False, upload_to='attachments/')
     approvalstatus = models.BooleanField(default=False)
     paymentstatus = models.BooleanField(default=False)
     username = models.ForeignKey(Employee,

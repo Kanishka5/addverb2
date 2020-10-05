@@ -1,60 +1,191 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="{% static "css/signup.css" %}"
-    />
-    <title>Register</title>
-  </head>
-  <body>
-    <div class="outercontain">
-      <form method="POST">
-        {% csrf_token %}
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" />
-        <br />
-        <br />
-        <label for="name">Email:</label>
-        <input type="text" id="email" name="email" />
-        <br />
-        <br />
-        <label for="mobile">Mobile:</label>
-        <input type="text" id="mobile" name="mobile" />
-        <br />
-        <br />
-        <label for="name">Bank account no. :</label>
-        <input type="text" id="accountno" name="accountno" />
-        <br />
-        <br />
-        <label for="username">Employee id:</label>
-        <input type="text" id="username" name="username" />
-        <br />
-        <br />
-        <label for="name">Profile:</label>
-        <select id="profile" name="profile">
-          <option value="1">Manager</option>
-          <option value="2">Engineer</option>
-          <option value="3">Accountant</option>
-        </select>
+<html>
 
-        <br />
-        <br />
-        <label for="managerid">Manager id:</label>
-        <input type="text" id="managerid" name="managerid" />
-        <br />
-        <br />
-        <label for="password1">Password:</label>
-        <input type="password" id="password1" name="password1" />
-        <br />
-        <br />
-        <label for="password2">Confirm password:</label>
-        <input type="password" id="password2" name="password2" />
-        <br />
-        <br />
-        <button>Sign up</button>
-      </form>
+<head>
+  <title>Sign Up</title>
+  <meta name="description" content="Inquest is the online treasure hunt of the official techno-management fest of National
+  Institute of Technology, Durgapur" />
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="{% static "img/Aarohan-Tab-Logo" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "vendor/animate/animate.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "vendor/css-hamburgers/hamburgers.min.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "vendor/animsition/css/animsition.min.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "vendor/select2/select2.min.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "vendor/daterangepicker/daterangepicker.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "css/bg2.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "css/nav.css" %}" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <canvas id="stars" width="300" height="300"></canvas>
+  <!-- signup error message -->
+  {% if message %}
+  <div id="msg" class="alert alert-warning alert-dismissible fade show" role="alert" style="position: fixed;
+  right: 37vw;
+  z-index: 5555;
+  height: 50px;
+  width: 26vw;">
+    {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %}
+
+  <!-- navbar -->
+  <nav class="nav">
+    <div class="container" id="nav-cont">
+      <div id="mainListDiv" class="main_list">
+        <ul class="navlinks">
+          <li><a href="/">Home</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          <li><a href="/"> Hi {{ user.name }} !</a></li>
+          {% else %}
+          <li><a href="{% url 'signin' %}">Login</a></li>
+          <li><a href="{% url 'signup' %}">Sign Up</a></li>
+          {% endif %}
+        </ul>
+      </div>
+      <span class="navTrigger">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
     </div>
-  </body>
+  </nav>
+
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54" style="width: 500px;">
+
+        <form class="login100-form validate-form" method="POST">{% csrf_token %}
+          <span class="login100-form-title p-b-49">
+            Sign Up
+          </span>
+
+          <div class="wrap-input100 validate-input m-b-23" data-validate="Name is required">
+            <span class="label-input100">Name</span>
+            <input class="input100" type="text" name="name" placeholder="Type your Name" />
+            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-23" data-validate="Number is required">
+            <span class="label-input100">Contact No.</span>
+            <input class="input100" type="tel" name="mobile" pattern="[6789][0-9]{9}"
+              placeholder="Enter your Contact Number" />
+            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-23" data-validate="E-mail is required">
+            <span class="label-input100">E-mail</span>
+            <input class="input100" type="email" name="email" placeholder="Type your e-mail" />
+            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-23" data-validate="Account no. is required">
+            <span class="label-input100">Bank Account Number</span>
+            <input class="input100" type="text" name="accountno" placeholder="Type your Account no." />
+            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-23" data-validate="Employee ID is required">
+            <span class="label-input100">Employee ID</span>
+            <input class="input100" type="text" name="username" placeholder="Type your Employee ID" />
+            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-23" data-validate="Employee ID is required">
+            <span class="label-input100">Profile</span>
+            <select class="input100" id="profile" name="profile">
+              <option value="1">Manager</option>
+              <option value="2">Engineer</option>
+              <option value="3">Accountant</option>
+            </select>
+            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          </div>
+
+          <div class="wrap-input100 ">
+            <span class="label-input100">Your Manager's ID</span>
+            <input class="input100" type="text" name="managerid" placeholder="Type your Manager's ID" />
+            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-23" data-validate="Password is required">
+            <span class="label-input100">Password</span>
+            <input id="password" class="input100" type="password" minlength=6 name="password1"
+              placeholder="Type your password" />
+            <span class="focus-input100" data-symbol="&#xf190;"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-23" data-validate="Password is required">
+            <span class="label-input100">Confirm Password</span>
+            <input id="confirm_password" class="input100" type="password" name="password2"
+              placeholder="Type your password again" />
+            <span class="focus-input100" data-symbol="&#xf190;"></span>
+          </div>
+
+
+          <div class="container-login100-form-btn">
+            <div class="wrap-login100-form-btn">
+              <div class="login100-form-bgbtn"></div>
+              <button class="login100-form-btn"
+                style="    background: linear-gradient(90deg, rgb(111, 158, 65) 0%, rgb(73, 111, 23) 100%);">
+                Sign Up
+              </button>
+            </div>
+          </div>
+
+          <div class="flex-col-c p-t-20">
+            <span class="txt1 p-b-5">
+              Already have account?
+            </span>
+
+            <a href="{% url 'signin' %}" class="txt2">
+              Back to Login
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var password = document.getElementById("password")
+      , confirm_password = document.getElementById("confirm_password");
+
+    function validatePassword() {
+      if (password.value != confirm_password.value) {
+        confirm_password.setCustomValidity("Passwords Don't Match");
+      } else {
+        confirm_password.setCustomValidity('');
+      }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+  </script>
+
+  <!-- <script type="text/javascript" src="https://requirejs.org/docs/release/2.1.15/minified/require.js"></script> -->
+  <script type="text/javascript" src="https://rawgit.com/ironwallaby/delaunay/master/delaunay.js"></script>
+  <script type="text/javascript" src="{% static "js/bg2.js" %}"></script>
+  <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
+  <script src="{% static "vendor/animsition/js/animsition.min.js" %}"></script>
+  <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+  <script src="{% static "vendor/select2/select2.min.js" %}"></script>
+  <script src="{% static "vendor/daterangepicker/moment.min.js" %}"></script>
+  <script src="{% static "vendor/daterangepicker/daterangepicker.js" %}"></script>
+  <script src="{% static "vendor/countdowntime/countdowntime.js" %}"></script>
+  <script src="{% static "js/main.js" %}"></script>
+  <script src="{% static "js/nav.js" %}"></script>
+</body>
+
 </html>

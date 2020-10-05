@@ -28,10 +28,13 @@ class SignUpForm(UserCreationForm):
 class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
-        fields = ('description', 'amount', 'date', 'attachments', 'username')
+        fields = [
+            'description', 'amount', 'date', 'attachments', 'username',
+            'approvalstatus'
+        ]
 
     def clean(self):
-        cleaned_data = super().clean()
+        cleaned_data = super(ExpenseForm, self).clean()
         print(cleaned_data)
 
 

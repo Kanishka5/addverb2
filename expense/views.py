@@ -37,10 +37,10 @@ def signup(request):
                 user.save()
                 login(request, user)
                 message = "Logged In !"
-                return render(request, 'home.html', {'message': message})
+                return redirect('dashboard')
             else:
                 message = "You are logged in already"
-                return render(request, 'home.html', {'message': message})
+                return redirect('dashboard')
         else:
             message = "Invalid employee ID."
             return render(request, 'signup.html', {'message': message})
@@ -102,15 +102,17 @@ def dashboard(request):
 #expense form ->
 def expenseform(request):
     if (request.method == 'POST'):
+        print(request.FILES)
         data = request.POST
-        user = request.user.id
+        empid = int(request.user.id)
+        user = Employee.objects.get(pk=empid)
         _mutable = data._mutable
         data._mutable = True
-        data['username'] = user
+        data['username'] = empid
+        if (user.profile == '1'):
+            data['approvalstatus'] = True
         data._mutable = _mutable
-        print(data)
         form = ExpenseForm(data, request.FILES)
-        print(form)
 
         if form.is_valid():
             expense = form.save(commit=False)
@@ -119,7 +121,8 @@ def expenseform(request):
         else:
             return render(request, 'expenseform.html')
     else:
-        return render(request, 'expenseform.html')
+        form = ExpenseForm()
+        return render(request, 'expenseform.html', {'form': form})
 
 
 # accept/reject approval request ->

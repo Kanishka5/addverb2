@@ -1,0 +1,15 @@
+
+ 
+.countdown {
+  width: 99vw;
+  height: auto;
+  display: block;
+  
+  background: transparent;
+ 
+}
+#timer{
+  position:fixed;
+  z-index:9999;
+  width:100vw;
+}

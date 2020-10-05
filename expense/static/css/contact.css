@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  height: 25vh;
+  padding: 2vw;
+  text-align: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border: 2px solid black;
+  border-radius: 18px;
+  margin: 8px;
+}
+
+.name {
+  background-color: whitesmoke;
+  min-height: 48vh;
+  /* padding: 0vw; */
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 18px;
+  /* margin: 4vw; */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  /* margin-left: 12vw; */
+  padding-bottom: 3vh;
+}
+
+@media only screen and (max-width: 600px) {
+  .card {
+    margin: 0px;
+    margin-bottom: 16px;
+    border-radius: 18px;
+  }
+  .name {
+    background-color: whitesmoke;
+    min-height: 48vh;
+    padding: 0vw;
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 18px;
+    margin: 4vw;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin-left: 0;
+  }
+}
+
+.name .h3 {
+  padding-top: 12px;
+}
+
+.plate {
+  padding: 2vw;
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .plate {
+    margin: 0px;
+    margin-bottom: 16px;
+  }
+}
+
+.field {
+  padding: 2vw;
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .field h3 {
+    font-size: 1.2em;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #rank {
+    display: contents;
+  }
+}
+
+.group {
+  padding-right: 3vw;
+  padding-left: 3vw;
+  margin: 0 8vw;
+}
+
+@media only screen and (min-width: 650px) {
+  .group-fields {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  #input-1 {
+    width: 20vw !important;
+    margin-left: 21.5vw !important;
+  }
+}
+
+iframe {
+  display: block;
+  margin: 0 auto;
+  width: 600px;
+  height: 200px;
+}
+
+@media only screen and (max-width: 600px) {
+  iframe {
+    width: 350px;
+  }
+}
+
+.info {
+  color: whitesmoke;
+}

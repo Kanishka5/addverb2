@@ -1,0 +1,115 @@
+body {
+  overflow-x: hidden;
+}
+
+.cont {
+  height: 100vh;
+  width: 80vw;
+  background-color: transparent;
+  position: center;
+  padding: 50px;
+}
+
+/*welcome*/
+.inq-logo {
+  padding-top: 5vh;
+}
+
+.inq-logo img {
+  width: 60%;
+  margin-left: 20%;
+}
+
+.block {
+  background-color: #ededed;
+  height: auto;
+  width: 600px;
+  margin: 20px;
+  border-radius: 6px;
+  padding: 25px 30px;
+  transition: color 0.3s ease;
+  /* box-shadow: #eaeaea -2px 2px 3px 11px; */
+}
+
+.block:hover > .bl_text {
+  color: #9a3293;
+}
+
+.info_el {
+  min-height: 5vh;
+}
+.col {
+  justify-content: center;
+}
+
+.timer {
+  font-size: 40px;
+  text-align: center;
+  color: white;
+  padding-bottom: 5vh;
+}
+
+.main_blocks {
+  justify-content: center;
+}
+
+.bl_header {
+  font-size: 1.8rem;
+  font-weight: bolder;
+  color: black;
+  padding-bottom: 2vh;
+}
+
+.bl_text {
+  color: black;
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .game_start {
+    line-height: 0.8;
+  }
+
+  /* .infobar {
+    margin-top: 50px;
+  } */
+}
+
+@media only screen and (max-width: 600px) {
+  .inq-logo img {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .bl_text {
+    color: black;
+    font-size: 1.1rem;
+    line-height: 1.7rem;
+  }
+  .cont {
+    width: 100vw;
+  }
+
+  .info_el {
+    width: 100vw;
+    height: auto !important;
+  }
+
+  .block {
+    width: 90vw;
+    margin-top: 0px;
+  }
+
+  .block_rw {
+    display: block;
+  }
+
+  .infobar {
+    justify-content: center;
+  }
+
+  .game_start {
+    font-size: 2rem;
+  }
+}

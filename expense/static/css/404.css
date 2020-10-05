@@ -1,0 +1,17 @@
+img{
+    height: 80vh;
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: height 0.5s;
+}
+
+img:hover{
+    height: 81vh;
+}
+
+@media only screen and (max-width:786px)
+{
+    img{
+        width: 80vw;
+        height: auto;
+    }
+}
