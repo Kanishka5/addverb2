@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New expense</title>
+  </head>
+  <body>
+    <h1>Add new expense</h1>
+    <div class="outercontain">
+      <form method="POST">
+        {% csrf_token %}
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" />
+        <br />
+        <br />
+        <label for="amount">Amount:</label>
+        <input type="number" step="any" id="amount" name="amount" />
+        <br />
+        <br />
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" />
+        <br />
+        <br />
+        <label for="attachment">Attachment:</label>
+        <input type="file" id="attachment" name="attachment" />
+        <br />
+        <br />
+        <button>Submiit</button>
+      </form>
+    </div>
+  </body>
+</html>

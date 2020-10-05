@@ -5,7 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dasboard</title>
   </head>
-  <body>
+  <body style="text-align: center">
     <h1>Hello I am dashboard.</h1>
+    <button type="button">
+      <a href="{% url 'expenseform' %}"> new expense </a>
+    </button>
+    <div>
+      <h1>Expenses</h1>
+      <div
+        style="margin: 0 20vw; display: flex; justify-content: space-between"
+      >
+        <h3>expense description</h3>
+        <h3>expense amount</h3>
+        <h3>expense date</h3>
+        <h3>expense approval status</h3>
+        <h3>expense payment status</h3>
+      </div>
+
+      {% for expense in expenses %}
+      <div
+        style="margin: 0 20vw; display: flex; justify-content: space-between"
+      >
+        <p>{{expense.description}}</p>
+        <p>{{expense.amount}}</p>
+        <p>{{expense.date}}</p>
+        <p>{{expense.approvalstatus}}</p>
+        <p>{{expense.paymentstatus}}</p>
+      </div>
+      {% endfor %}
+    </div>
   </body>
 </html>

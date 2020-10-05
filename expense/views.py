@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from .forms import CustomUserCreationForm, SignUpForm
+from .forms import CustomUserCreationForm, SignUpForm, ExpenseForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 from django.shortcuts import redirect
-from .models import Employee
+from .models import Employee, Expense
 
 
 # homepage ->
@@ -14,14 +14,21 @@ def home(request):
     else:
         t = int(request.user.id)
         user = Employee.objects.get(id=t)
-        print(user)
-        return render(request, 'home.html', {'name': user})
+        return render(request, 'home.html', {'name': user.name})
 
 
 # singup ->
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        data = request.POST
+        managerid = data['managerid']
+        if (managerid):
+            managerpk = Employee.objects.get(username=managerid).id
+            _mutable = data._mutable
+            data._mutable = True
+            data['managerid'] = managerpk
+            data._mutable = _mutable
+        form = SignUpForm(data)
         print(form)
         if form.is_valid():
             user = form.save(commit=False)
@@ -70,4 +77,29 @@ def logoutReq(request):
 
 #dashboard ->
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    t = int(request.user.id)
+    expenses = Expense.objects.filter(username=t).order_by('date')
+    return render(request, 'dashboard.html', {'expenses': expenses})
+
+
+#expense form ->
+def expenseform(request):
+    if (request.method == 'POST'):
+        data = request.POST
+        user = request.user.id
+        _mutable = data._mutable
+        data._mutable = True
+        data['username'] = user
+        data._mutable = _mutable
+        print(data)
+        form = ExpenseForm(data)
+        print(form)
+
+        if form.is_valid():
+            expense = form.save(commit=False)
+            expense.save()
+            return redirect('dashboard')
+        else:
+            return render(request, 'expenseform.html')
+    else:
+        return render(request, 'expenseform.html')
