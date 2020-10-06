@@ -5,6 +5,7 @@
   line-height: 65px;
   text-align: center;
   z-index: 1;
+  background-color: #1d263b;
 }
 
 .nav div.logo {
@@ -48,13 +49,13 @@
 
 .nav div.main_list ul li a {
   text-decoration: none;
-  color: #111;
+  color: white;
   line-height: 65px;
   font-size: 1.2rem;
 }
 
 .nav div.main_list ul li a:hover {
-  color: rgb(72, 72, 82);
+  color: #00e676;
 }
 
 .navTrigger {
@@ -62,8 +63,8 @@
 }
 
 .nav {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  /* padding-top: 20px;
+  padding-bottom: 20px; */
   -webkit-transition: all 0.4s ease;
   transition: all 0.4s ease;
 }

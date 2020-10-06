@@ -1,23 +1,81 @@
-{% extends 'base.html' %} {% block content %}
-<div>
-  <h1>Welcome to expense management system.</h1>
-  {% if name %}
-  <h1>Hello {{name}}!</h1>
-  <button type="button">
-    <a href="{% url 'logout' %}">Logout</a>
-  </button>
-  <button type="button">
-    <a href="{% url 'dashboard' %}">Go to dashboard</a>
-  </button>
-  {% else %}
-  <div>
-    <button type="button">
-      <a href="{% url 'signin' %}">Signin</a>
-    </button>
-    <button type="button">
-      <a href="{% url 'signup' %}">Register</a>
-    </button>
-  </div>
-  {% endif %}
-</div>
-{% endblock%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/animate/animate.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/css-hamburgers/hamburgers.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/animsition/css/animsition.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/select2/select2.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/daterangepicker/daterangepicker.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/bg2.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/nav.css" %}" />
+    <link rel="stylesheet" href="{% static "css/home.css" %}">
+  </head>
+  <body>
+    <canvas id="stars" width="300" height="300"></canvas>
+    <!-- navbar -->
+    <nav class="nav">
+      <div class="container" id="nav-cont">
+        <div id="mainListDiv" class="main_list">
+          <ul class="navlinks">
+            <li><a href="../">Home</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="../"> Hi {{ user.name }} !</a></li>
+            {% else %}
+            <li><a href="{% url 'signin' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <span class="navTrigger">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </nav>
+
+    <div class="home">
+      <img alt="money" src="{% static "img/money.svg" %}" style="width: 20vw;margin-bottom: 5vh;"/>
+      {% if user.is_authenticated %}
+      <!-- <h1>Hello {{name}}!</h1> -->
+      <h1 style="margin-top: 2rem;">Welcome to <br/>Expense Management System</h1>
+      <button class="button" type="button">
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+      </button>
+      {% else %}
+      <div style="text-align: center;">
+        <h1 style="margin-top: 2rem;">Welcome to <br/>Expense Management System</h1>
+        <button class="button" type="button">
+          <a href="{% url 'signin' %}">Login</a>
+        </button>
+        <button class="button" type="button">
+          <a href="{% url 'signup' %}">Register</a>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- scripts -->
+    <script type="text/javascript" src="https://rawgit.com/ironwallaby/delaunay/master/delaunay.js"></script>
+    <script type="text/javascript" src="{% static "js/bg2.js" %}"></script>
+    <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
+    <script src="{% static "vendor/animsition/js/animsition.min.js" %}"></script>
+    <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "vendor/select2/select2.min.js" %}"></script>
+    <script src="{% static "vendor/daterangepicker/moment.min.js" %}"></script>
+    <script src="{% static "vendor/daterangepicker/daterangepicker.js" %}"></script>
+    <script src="{% static "vendor/countdowntime/countdowntime.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+    <script src="{% static "js/nav.js" %}"></script>
+  </body>
+</html>

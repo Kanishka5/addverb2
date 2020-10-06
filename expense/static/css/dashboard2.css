@@ -1,0 +1,129 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.dashboard {
+  margin-top: 10vh;
+  margin-left: 15vw;
+}
+
+h1 {
+  font-size: 1.7rem;
+}
+h2 {
+  font-size: 1.3rem;
+}
+
+a {
+  color: #e040e2;
+}
+a:hover {
+  color: #00e676;
+}
+
+.sidebar {
+  padding: 0 1%;
+  text-align: center;
+  padding-top: 80px;
+  position: absolute;
+  height: 100vh;
+  width: 15vw;
+  background-color: #1d263b;
+}
+
+.sidebar p {
+  color: white;
+  font-size: 1.3rem;
+}
+
+.sidebar a {
+  font-size: 1.3rem;
+}
+
+.button {
+  margin: 5vh 10vw;
+  background: linear-gradient(
+    90deg,
+    rgb(111, 158, 65) 0%,
+    rgb(73, 111, 23) 100%
+  );
+  padding: 0.8rem 2rem;
+  border-radius: 5px;
+}
+
+.button a {
+  font-size: 1rem;
+  color: white;
+}
+
+.total-expenses {
+  margin: 5vh 10vw;
+  display: flex;
+  margin-top: calc(10vh + 65px);
+}
+
+.total-expenses p {
+  color: rgba(255, 255, 255, 0.788);
+  font-size: 1.3rem;
+}
+
+.expense-item {
+  background-color: #1d263b;
+  color: white;
+  padding: 5vh 5%;
+  margin-right: 5vw;
+  border-radius: 5px;
+  box-shadow: -2px 2px 9px 1px #5897fb21;
+}
+
+.approvebtn {
+  background: linear-gradient(
+    90deg,
+    rgb(111, 158, 65) 0%,
+    rgb(73, 111, 23) 100%
+  );
+  padding: 0.5rem 0.8rem;
+  border-radius: 5px;
+  color: white;
+}
+
+.databox {
+  text-align: left;
+  background-color: #1d263b;
+  margin: 5vh 10vw;
+  padding: 2vh 5%;
+  border-radius: 5px;
+  box-shadow: -2px 2px 9px 1px #5897fb21;
+}
+
+.databox h1 {
+  margin: 3vh 0;
+  color: white;
+}
+
+.expense-items {
+  width: 100%;
+  display: flex;
+  padding: 2% 0;
+  justify-content: space-between;
+}
+
+.expense-items h3 {
+  width: 16%;
+  text-align: center;
+  color: white;
+  font-size: 1.3rem;
+  padding: 0 2%;
+}
+.expense-items p {
+  width: 16%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.788);
+  padding: 0 2%;
+}
+.expense-items h3:nth-child(1) {
+  width: 20%;
+}
+.expense-items p:nth-child(1) {
+  width: 20%;
+}

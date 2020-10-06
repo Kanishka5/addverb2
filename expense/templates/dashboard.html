@@ -5,31 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% load static %}
     <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="{% static
-    "vendor/bootstrap/css/bootstrap.min.css" %}" /> <link rel="stylesheet"
-    type="text/css" href="{% static
-    "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}" /> <link
-    rel="stylesheet" type="text/css" href="{% static
-    "fonts/iconic/css/material-design-iconic-font.min.css" %}" /> <link
-    rel="stylesheet" type="text/css" href="{% static
-    "vendor/animate/animate.css" %}" /> <link rel="stylesheet" type="text/css"
-    href="{% static "vendor/css-hamburgers/hamburgers.min.css" %}" /> <link
-    rel="stylesheet" type="text/css" href="{% static
-    "vendor/animsition/css/animsition.min.css" %}" /> <link rel="stylesheet"
-    type="text/css" href="{% static "vendor/select2/select2.min.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static
-    "vendor/daterangepicker/daterangepicker.css" %}" /> <link rel="stylesheet"
-    type="text/css" href="{% static "css/util.css" %}" /> <link rel="stylesheet"
-    type="text/css" href="{% static "css/main.css" %}" /> <link rel="stylesheet"
-    type="text/css" href="{% static "css/nav2.css" %}" /> <link rel="stylesheet"
-    type="text/css" href="{% static "css/dashboard.css" %}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/animate/animate.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/css-hamburgers/hamburgers.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/animsition/css/animsition.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/select2/select2.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/daterangepicker/daterangepicker.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/nav2.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/dashboard2.css" %}" /> 
   </head>
-  <body style="text-align: center">
+  <body style="background-color: #f1f4f7;">
     <!-- navbar -->
-    <nav class="nav">
-      <div class="container" id="nav-cont">
-        <div id="mainListDiv" class="main_list">
-          <ul class="navlinks">
+    <nav class="nav" >
+      <div class="container" id="nav-cont" style="max-width: 100vw;margin-right: 8vw;">
+        <div id="mainListDiv" class="main_list" >
+          <ul class="navlinks" >
             <li><a href="../">Home</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -48,89 +44,155 @@
       </div>
     </nav>
 
+    <!-- sidebar -->
+    <div class="sidebar">
+      <p>{{ user.name }}</p>
+      <p>Profile: {% if user.profile == '1' %} Manager {% elif user.profile == '2' %} Engineer {% else %} Accountant {% endif %}</p>
+      <a href="{% url 'logout' %}">Logout</a>
+      <hr style="background-color: white;"/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <p><a href="#yourexpense">Your expenses</a></p>
+      {% if user.profile == '1' %}
+        <p><a href="#manager">Approval requests</a></p>
+        <p><a href="#teamexpense">Team expenses</a></p>
+      {% endif %}
+      {% if user.profile == '3' %}
+        <p><a href="#accountant">Payment requests</a></p>
+      {% endif %}
+    </div>
+
+
     <div class="dashboard">
+      <!-- total expense amounts -->
+      <div class="total-expenses">
+        <div class="expense-item">
+          <h2 style="color:rgb(152, 219, 85)">Your total expense</h2>
+          <p>₹ {{yourexpense}}</p>
+        </div>
+        {% if user.profile == '1' %}
+          <div class="expense-item">
+            <h2 style="color:rgb(152, 219, 85)">Your team's expense</h2>
+            <p>₹ {{teamexpense}}</p>
+          </div>
+        {% endif %}
+      </div>
       <!-- for manager -->
       {% if approvereq %}
-      <h1>Approve requests:</h1>
-      {% for expense in approvereq %}
-      <div
-        style="margin: 0 20vw; display: flex; justify-content: space-between"
-      >
-        <p>{{expense.username}}</p>
-        <p>{{expense.description}}</p>
-        <p>{{expense.amount}}</p>
-        <p>{{expense.date}}</p>
-        <p>{{expense.approvalstatus}}</p>
-        <p>{{expense.paymentstatus}}</p>
-        <a href="/media/{{expense.attachments}}" target="__blank"
-          >view attachments</a
-        >
-        <form action="/approval/" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="expenseid" value="{{expense.id}}" />
-          <input type="submit" name="Approval" value="Approve" />
-        </form>
-        <form action="/approval/" method="post">
-          {% csrf_token %}
-          <input type="submit" name="Approval" value="Deny" />
-        </form>
+      <div id="manager" class="databox">
+        <h1 style="color:rgb(152, 219, 85)">Approval requests</h1>
+        <hr style="background-color:white" />
+        {% for expense in approvereq %}
+        <div class="expense-items">
+          <p>{{expense.username}}</p>
+          <p>{{expense.description}}</p>
+          <p>₹ {{expense.amount}}</p>
+          <p>{{expense.date}}</p>
+
+          {% if expense.approvalstatus %}
+          <p>approved</p>
+          {% else %}
+            <p>Pending</p>
+          {% endif %}
+
+          {% if expense.paymentstatus %}
+            <p>approved</p>
+          {% else %}
+            <p>Pending</p>
+          {% endif %}
+
+          <a href="/media/{{expense.attachments}}" target="__blank"
+            >view attachments</a
+          >
+          <form action="/approval/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="expenseid" value="{{expense.id}}" />
+            <input class="approvebtn" type="submit" name="Approval" value="Approve" />
+          </form>
+          <!-- <form action="/approval/" method="post">
+            {% csrf_token %}
+            <input type="submit" name="Approval" value="Deny" />
+          </form> -->
+        </div>
+        {% endfor %} 
       </div>
-      {% endfor %} {% endif %}
+      {% endif %}
 
       <!-- for accountant -->
       {% if payreq %}
-      <h1>Payment requests:</h1>
-      {% for expense in payreq %}
-      <div
-        style="margin: 0 20vw; display: flex; justify-content: space-between"
-      >
-        <p>{{expense.id}}</p>
-        <p>{{expense.description}}</p>
-        <p>{{expense.amount}}</p>
-        <p>{{expense.date}}</p>
-        <p>{{expense.approvalstatus}}</p>
-        <p>{{expense.paymentstatus}}</p>
-        <a href="/media/{{expense.attachments}}" target="__blank"
-          >view attachments</a
-        >
-        <form action="/paymentreq/" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="expenseid" value="{{expense.id}}" />
-          <input type="submit" name="Approval" value="Approve" />
-        </form>
-        <form action="/paymentreq/" method="post">
-          {% csrf_token %}
-          <input type="submit" name="Approval" value="Deny" />
-        </form>
-      </div>
-      {% endfor %} {% endif %}
+      <div id="accountant" class="databox">
+        <h1 style="color:rgb(152, 219, 85)" >Payment requests:</h1>
+        {% for expense in payreq %}
+          <div class="expense-items">
+            <p>{{expense.username}}</p>
+            <p>{{expense.description}}</p>
+            <p>₹ {{expense.amount}}</p>
+            <p>{{expense.date}}</p>
 
-      <!-- for all -->
-      <button type="button">
-        <a href="{% url 'expenseform' %}"> new expense </a>
+            {% if expense.approvalstatus %}
+            <p>approved</p>
+            {% else %}
+              <p>Pending</p>
+            {% endif %}
+
+            {% if expense.paymentstatus %}
+              <p>approved</p>
+            {% else %}
+              <p>Pending</p>
+            {% endif %}
+
+            <a href="/media/{{expense.attachments}}" target="__blank"
+              >view attachments</a
+            >
+            <form action="/paymentreq/" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="expenseid" value="{{expense.id}}" />
+              <input class="approvebtn" type="submit" name="Approval" value="Approve" />
+            </form>
+            <!-- <form action="/paymentreq/" method="post">
+              {% csrf_token %}
+              <input type="submit" name="Approval" value="Deny" />
+            </form> -->
+          </div>
+        {% endfor %}      
+      </div>
+      {% endif %}
+
+      <!-- Your expense -->
+      <button class="button" type="button">
+        <a href="{% url 'expenseform' %}"> Add New Expense </a>
       </button>
-      <div>
-        <h1>Your Expenses</h1>
-        <div
-          style="margin: 0 20vw; display: flex; justify-content: space-between"
-        >
+      <div id="yourexpense" class="databox">
+        <h1 style="color:rgb(152, 219, 85);margin-bottom: 5vh;" >Your Expenses</h1>
+        <div class="expense-items">
           <h3>expense description</h3>
           <h3>expense amount</h3>
           <h3>expense date</h3>
-          <h3>expense approval status</h3>
-          <h3>expense payment status</h3>
+          <h3>approval status</h3>
+          <h3>payment status</h3>
           <h3>attachments</h3>
         </div>
-
+        <hr style="background-color:white" />
         {% for expense in expenses %}
-        <div
-          style="margin: 0 20vw; display: flex; justify-content: space-between"
-        >
+        <div class="expense-items">
           <p>{{expense.description}}</p>
-          <p>{{expense.amount}}</p>
+          <p>₹ {{expense.amount}}</p>
           <p>{{expense.date}}</p>
-          <p>{{expense.approvalstatus}}</p>
-          <p>{{expense.paymentstatus}}</p>
+
+          {% if expense.approvalstatus %}
+            <p>approved</p>
+          {% else %}
+            <p>Pending</p>
+          {% endif %}
+
+          {% if expense.paymentstatus %}
+            <p>approved</p>
+          {% else %}
+            <p>Pending</p>
+          {% endif %}
+
           <a href="/media/{{expense.attachments}}" target="__blank"
             >view attachments</a
           >
@@ -139,39 +201,66 @@
       </div>
 
       <!-- Team expense -->
-      <div>
-        <h1>Team Expenses</h1>
-        <div
-          style="margin: 0 20vw; display: flex; justify-content: space-between"
-        >
-          <h3>expense description</h3>
-          <h3>expense amount</h3>
-          <h3>expense date</h3>
-          <h3>expense approval status</h3>
-          <h3>expense payment status</h3>
-          <h3>attachments</h3>
-        </div>
+      {% if team %}
+        <div id="teamexpense" class="databox">
+          <h1 style="color:rgb(152, 219, 85);margin-bottom: 5vh;">Team Expenses</h1>
+          <div class="expense-items">
+            <h3>expense description</h3>
+            <h3>expense amount</h3>
+            <h3>expense date</h3>
+            <h3>approval status</h3>
+            <h3>payment status</h3>
+            <h3>attachments</h3>
+          </div>
+          <hr style="background-color:white" />
+          {% for expense in team %}
+          <div class="expense-items">
+            <p>{{expense.description}}</p>
+            <p>₹ {{expense.amount}}</p>
+            <p>{{expense.date}}</p>
 
-        {% for expense in expenses %}
-        <div
-          style="margin: 0 20vw; display: flex; justify-content: space-between"
-        >
-          <p>{{expense.description}}</p>
-          <p>{{expense.amount}}</p>
-          <p>{{expense.date}}</p>
-          <p>{{expense.approvalstatus}}</p>
-          <p>{{expense.paymentstatus}}</p>
-          <a href="/media/{{expense.attachments}}" target="__blank"
-            >view attachments</a
-          >
+            {% if expense.approvalstatus %}
+              <p>approved</p>
+            {% else %}
+              <p>Pending</p>
+            {% endif %}
+
+            {% if expense.paymentstatus %}
+              <p>approved</p>
+            {% else %}
+              <p>Pending</p>
+            {% endif %}
+
+            <a href="/media/{{expense.attachments}}" target="__blank"
+              >view attachments</a
+            >
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
-      </div>
+      {% endif %}
     </div>
 
     <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
     <script src="{% static "vendor/animsition/js/animsition.min.js" %}"></script>
     <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
     <script src="{% static "js/nav.js" %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      $("a").on('click', function(event) {
+        if (this.hash !== "") {
+          // Prevent default anchor click behavior
+          event.preventDefault();
+          // Store hash
+          var hash = this.hash;
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top
+          }, 800, function(){
+            window.location.hash = hash;
+          });
+        } // End if
+      });
+    });
+    </script>
   </body>
 </html>
