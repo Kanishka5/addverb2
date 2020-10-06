@@ -38,7 +38,7 @@ class Expense(models.Model):
     paymentstatus = models.BooleanField(default=False)
     username = models.ForeignKey(Employee,
                                  blank=False,
-                                 on_delete=models.CASCADE)
+                                 on_delete=models.CASCADE) #employeeid
 
     def __str__(self):
         return self.description

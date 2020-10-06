@@ -9,60 +9,55 @@ from .models import Employee, Expense
 
 # homepage ->
 def home(request):
-    if request.user.is_anonymous:
-        return render(request, 'home.html')
-    else:
-        t = int(request.user.id)
-        user = Employee.objects.get(id=t)
-        return render(request, 'home.html', {'name': user.name})
+    return render(request, 'home.html', {})
 
 
 # singup ->
 def signup(request):
-    if request.user.is_anonymous:
-        if request.method == 'POST':
+    if request.user.is_anonymous: 
+        if request.method == 'POST': 
             data = request.POST
-            managerid = data['managerid']
+            managerid = data['managerid'] 
             if (managerid):
                 managerpk = Employee.objects.get(username=managerid).id
                 _mutable = data._mutable
                 data._mutable = True
-                data['managerid'] = managerpk
+                data['managerid'] = managerpk  
                 data._mutable = _mutable
-            form = SignUpForm(data)
+            form = SignUpForm(data) 
             print(form)
-            if form.is_valid():
+            if form.is_valid(): 
                 user = form.save(commit=False)
                 if request.user.is_anonymous:
                     user.is_active = True
                     user.save()
-                    login(request, user)
+                    login(request, user) 
                     message = "Logged In !"
-                    return redirect('dashboard')
+                    return redirect('dashboard') 
                 else:
                     message = "You are logged in already"
                     return redirect('dashboard')
-            else:
+            else: 
                 message = "Invalid employee ID."
-                return render(request, 'signup.html', {'message': message})
-        else:
+                return render(request, 'signup.html', {'message': message}) 
+        else: 
             form = SignUpForm()
-            return render(request, 'signup.html', {'form': form})
+            return render(request, 'signup.html', {'form': form}) 
     else:
-        return redirect('/')
+        return redirect('home')
 
 
 #signin ->
 def signin(request):
-    if request.user.is_anonymous:
-        if request.method == 'POST':
+    if request.user.is_anonymous: 
+        if request.method == 'POST': 
             username = request.POST.get('username')
             password = request.POST.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(username=username, password=password) 
             if user:
                 if user.is_active:
-                    login(request, user)
-                    return redirect('dashboard')
+                    login(request, user) 
+                    return redirect('dashboard') 
                 else:
                     return HttpResponse(
                         "Your account was inactive. Contact Admin")
@@ -73,13 +68,14 @@ def signin(request):
         else:
             return render(request, 'signin.html', {})
     else:
-        return redirect('/')
+        return redirect('home')
+
 
 
 #logout ->
 def logoutReq(request):
     logout(request)
-    return redirect('/')
+    return redirect('home')
 
 
 #dashboard ->
@@ -89,14 +85,14 @@ def dashboard(request):
     else:
         empid = int(request.user.id)
         user = Employee.objects.get(pk=empid)
-        data = {}
+        approvereq = {}
         team = {}
         payreq = {}
         teamexpense = 0
         yourexpense = 0
         if (user.profile == '1'):
             underman = Employee.objects.filter(managerid_id=empid)
-            data = Expense.objects.filter(username_id__in=underman,
+            approvereq = Expense.objects.filter(username_id__in=underman,
                                           approvalstatus=False)
             own_team = Employee.objects.filter(
                 managerid_id=empid) | Employee.objects.filter(id=empid)
@@ -104,11 +100,11 @@ def dashboard(request):
 
             for t in team:
                 teamexpense += t.amount
-            # data = Expense.objects.raw(
+            # approvereq = Expense.objects.raw(
             #     'SELECT * FROM expense_expense WHERE username_id in (SELECT id from expense_employee WHERE managerid_id = %s)',
             #     [empid])
         elif (user.profile == '3'):
-            payreq = Expense.objects.filter(paymentstatus=False)
+            payreq = Expense.objects.filter(approvalstatus=True,paymentstatus=False)
 
         expenses = Expense.objects.filter(username=empid).order_by('date')
         for expense in expenses:
@@ -117,7 +113,7 @@ def dashboard(request):
         return render(
             request, 'dashboard.html', {
                 'expenses': expenses,
-                'approvereq': data,
+                'approvereq': approvereq,
                 'payreq': payreq,
                 'team': team,
                 'teamexpense': round(teamexpense, 2),
@@ -138,7 +134,7 @@ def expenseform(request):
             _mutable = data._mutable
             data._mutable = True
             data['username'] = empid
-            if (user.profile == '1'):
+            if (user.profile == '1' or user.profile == '3'):
                 data['approvalstatus'] = True
             data._mutable = _mutable
             form = ExpenseForm(data, request.FILES)
